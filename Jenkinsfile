@@ -37,7 +37,7 @@ pipeline {
             }
         }
         stage('Package') {
-             agent label{'linxu_slave'}
+             agent {label 'linux_slave'}
             steps {
                 echo 'Packaging the Code'
                 sh 'mvn package'
