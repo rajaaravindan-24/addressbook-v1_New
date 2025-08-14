@@ -1,4 +1,4 @@
-sudo yum install java-17-amazon-corretto-devel -y
+sudo yum install java -y
 sudo yum install git -y
 sudo yum install maven -y
 
