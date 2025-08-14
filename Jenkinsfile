@@ -16,7 +16,7 @@ pipeline {
         stage('Compile') {
             agent any
             steps {
-                echo 'Compiling the Code in ${params.Env} environment'
+                echo "Compiling the Code in ${params.Env} environment"
                 sh 'mvn compile'
             }
         }
@@ -30,7 +30,7 @@ pipeline {
         stage('Unit Test') {
             agent any
             when {
-                expression { params.executeTests }
+                expression { ${params.executeTests} }
             }
             steps {
                 echo 'Unit Testing the Code'
@@ -47,7 +47,7 @@ pipeline {
         stage('Package') {
              agent {label 'linux_slave'}
             steps {
-                echo 'Packaging the Code version ${params.APPVERSION}'
+                echo "Packaging the Code version ${params.APPVERSION}"
                 sh 'mvn package'
             }
         }
