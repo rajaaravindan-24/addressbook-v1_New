@@ -37,6 +37,11 @@ pipeline {
                 echo 'Unit Testing the Code'
                 sh 'mvn test'
             }
+            post{
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
         }
         stage('Coverage Analysis') {
              agent any
@@ -54,6 +59,11 @@ pipeline {
         }
         stage('Publish the artifacts') {
             agent any
+            input {
+                message "Do you want to publish the artifacts to Jfrog?"
+                ok "Yes, publish"
+            }
+            
             steps {
                 echo 'Publishing the artifact to Jfrog'
                 sh 'mvn -U deploy -s settings.xml'
