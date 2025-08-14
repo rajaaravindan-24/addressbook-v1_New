@@ -10,6 +10,8 @@ pipeline {
         booleanParam(name: 'executeTests', defaultValue: true, description: 'Decide to run test cases')
         choice(name: 'APPVERSION', choices: ['1.1', '1.2', '1.3'], description: 'Select application version')
 
+environment {
+            BUILD_SERVER = 'ec2-user@172.31.42.134'
     }
     stages {
         
@@ -44,18 +46,24 @@ pipeline {
             }
         }
         stage('Coverage Analysis') {
-             agent any
+             agent {label 'linux_slave'}
             steps {
                 echo 'Static Code Coverage Analysis of the Code'
                 sh 'mvn verify'
             }
         }
         stage('Package') {
-             agent {label 'linux_slave'}
+             agent any
             steps {
-                echo "Packaging the Code version ${params.APPVERSION}"
-                sh 'mvn package'
+                script{
+                sshagent(['slave2']) {
+                    echo "Packaging the code ${params.APPVERSION}"
+                    sh "scp -o StrictHostKeyChecking=no server-script.sh ${BUILD_SERVER}:/home/ec2-user"
+                    sh "ssh -o StrictHostKeyChecking=no ${BUILD_SERVER} 'bash ~/server-script.sh'"
+               
             }
+            }
+        }
         }
         stage('Publish the artifacts') {
             agent any
