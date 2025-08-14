@@ -30,8 +30,9 @@ pipeline {
         stage('Unit Test') {
             agent any
             when {
-                expression { ${params.executeTests} }
-            }
+                expression { 
+                    params.executeTests == true} 
+                    }
             steps {
                 echo 'Unit Testing the Code'
                 sh 'mvn test'
