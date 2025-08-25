@@ -208,6 +208,9 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.19.1</version>
 				<configuration>
+        <forkCount>0</forkCount>
+        <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
+        <useSystemClassLoader>false</useSystemClassLoader>
 					<parallel>methods</parallel>
 					<threadCount>10</threadCount>
 					<includes>
